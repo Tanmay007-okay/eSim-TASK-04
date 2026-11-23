@@ -1,3 +1,54 @@
+# eSim Upgradation for Ubuntu 25.04 (Plucky Puffin)
+### FOSSEE Semester Long Internship Screening Task 4 Submission
+
+[![Ubuntu 25.04](https://img.shields.io/badge/Ubuntu-25.04%20Plucky-orange.svg)](https://ubuntu.com)
+[![Task 4](https://img.shields.io/badge/FOSSEE-Screening%20Task%204-blue.svg)](https://esim.fossee.in/)
+[![Issues Fixed](https://img.shields.io/badge/issues%20fixed-5%2F5%20resolved-brightgreen.svg)](TASK_4_REPORT.md)
+[![Branch](https://img.shields.io/badge/branch-installer-purple.svg)](https://github.com/Tanmay007-okay/eSim-TASK-04/tree/installer)
+
+**Candidate:** Tanmay Joshi  
+**Affiliation:** VIT University, Bhopal  
+**Target Platform:** Ubuntu 25.04 (Plucky Puffin) x86_64  
+**Active Branch:** `installer`  
+
+---
+
+## 📌 Executive Summary of Task 4 Fixes
+This branch (`installer`) upgrades the official eSim installer (`Ubuntu/install-eSim.sh`) to support **Ubuntu 25.04 (Plucky Puffin)**. It resolves **5 critical failure points** spanning modern Python security constraints, strict compiler standards, and package repository restructuring:
+
+| # | Issue Identified | Category & Severity | Impact on Legacy eSim 2.5 | Resolution Implemented | Status |
+|---|---|---|---|---|:---:|
+| **1** | **Python PEP 668 Protection** | Packaging (Critical) | `pip install` fails fatally with `externally-managed-environment` | Auto-provisions isolated virtual environment at `$HOME/.esim/venv` with `--system-site-packages` | **Resolved** |
+| **2** | **KiCad Launchpad PPA 404** | Repository (Critical) | Official KiCad PPA does not publish for plucky (HTTP 404 error) | Auto-detects 25.04 in `detect_profile()` and falls back to Ubuntu native `universe` repository | **Resolved** |
+| **3** | **GCC 14 C23 Compilation Strictness** | Compiler (High) | Fatal errors on implicit function declarations in SPICE routines | Injected `-Wno-error=implicit-function-declaration` into `CFLAGS` | **Resolved** |
+| **4** | **LLVM 10/12 Deprecation** | Toolchain (High) | Obsolete LLVM packages missing in Ubuntu 25.04 archives | Dynamic resolution of modern `llvm-18` / `llvm-16` / `llvm-dev` | **Resolved** |
+| **5** | **System Package Modernization** | Dependencies (Medium) | Obsolete `python3-wxgtk4.0` missing from Ubuntu 25.04 archives | Migrated dependencies to modern `python3-pyqt6` & Qt6 tools | **Resolved** |
+
+📖 **For full technical details, root cause analyses, compiler error logs, and verification steps, read [TASK_4_REPORT.md](TASK_4_REPORT.md).**
+
+---
+
+## 🚀 Quick Verification on Ubuntu 25.04
+
+### 1. Test Dry-Run Profile Detection
+```bash
+cd Ubuntu
+./install-eSim.sh --dry-run
+```
+*Output will confirm Ubuntu 25.04 detection and universe repository selection for KiCad 8.*
+
+### 2. Run Full Installation
+```bash
+cd Ubuntu
+./install-eSim.sh --install
+```
+
+---
+
+<details>
+<summary><strong>Original eSim Project Documentation (Click to expand)</strong></summary>
+
+
 <p align="center">
   <img src="images/logo.png" alt="eSim Logo" width="120"/>
 </p>
@@ -694,3 +745,5 @@ eSim is licensed under the **GNU General Public License v3.0**. See [LICENSE](LI
 <p align="center">
   <sub>⭐ If you find eSim useful, consider giving it a star on GitHub!</sub>
 </p>
+
+</details>
